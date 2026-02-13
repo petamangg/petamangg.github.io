@@ -22,6 +22,7 @@
         background: linear-gradient(to bottom, #ff85b3, #ffb6d9, #ffe4f0);
         text-align: center;
         overflow: hidden;
+        touch-action: none;
     }
 
     #bg-animations {
@@ -51,7 +52,8 @@
         box-shadow: 0 15px 35px rgba(255, 77, 166, 0.3);
         max-width: 500px;
         width: 90%;
-        transition: transform 0.2s;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        touch-action: pan-x;
     }
 
     @keyframes shake {
@@ -98,6 +100,20 @@
         animation: fall linear forwards;
     }
 
+    /* Animation for the heartbreak emoji going UP */
+    .heartbreak-fly {
+        position: fixed;
+        pointer-events: none;
+        z-index: 100;
+        font-size: 2rem;
+        animation: flyUp 1.5s ease-out forwards;
+    }
+
+    @keyframes flyUp {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-500px) rotate(20deg); opacity: 0; }
+    }
+
     @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
     .final-message {
@@ -106,10 +122,28 @@
         color: var(--primary-pink);
         line-height: 1.5;
     }
+
+    .corner-kitty {
+        position: fixed;
+        top: 10px;
+        width: 100px;
+        height: auto;
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    .left-kitty { left: 10px; }
+    .right-kitty { right: 10px; }
+
+    @media (max-width: 400px) {
+        .corner-kitty { width: 70px; }
+    }
 </style>
 </head>
 
 <body>
+<img src="https://media.tenor.com/g_5p6Arglx8AAAAm/blowing-kisses-kisses.webp" class="corner-kitty left-kitty" alt="Kitty Left">
+<img src="https://media.tenor.com/rRCSgVt0_-AAAAAm/hello-kitty.webp" class="corner-kitty right-kitty" alt="Kitty Right">
 
 <audio id="mySong">
     <source src="Vanessa Carlton - A Thousand Miles - VanessaCarltonVEVO.mp3" type="audio/mpeg">
@@ -120,8 +154,8 @@
 
 <div class="container">
     <div class="card" id="mainCard">
-        <h1 id="headerText">Will You Be My Valentine? 💖</h1>
-        <p id="subText">🌸 i wouldd loveee it if you became my valentine 😻😻💕</p>
+        <h1 id="headerText">wouldd you like to be my valentinee babyy !?!?😻😻💕💕💖</h1>
+        <p id="subText">🌸 i wouldd loveee it if you became my valentinee 😻😻💕</p>
 
         <img id="kittyImage" class="kitty" 
         src="https://media.tenor.com/XPVtG_4T_4gAAAAi/m%C3%A8o-y%C3%AAu.gif">
@@ -156,10 +190,60 @@ const noMessages = [
     "whyyy? 🥺",
     "noo please noo 😭",
     "please be my valentine! 🌸",
-    "pretty please?? 🧸",
     "don't do this to me... ❤️‍🩹",
+    
     "say YES! 💕"
 ];
+
+// --- Heartbreak Animation Function ---
+function spawnHeartbreak(e) {
+    const heart = document.createElement("div");
+    heart.classList.add("heartbreak-fly");
+    heart.innerText = "💔";
+    
+    // Position it where the button/click is
+    heart.style.left = (e.clientX || e.touches[0].clientX) + "px";
+    heart.style.top = (e.clientY || e.touches[0].clientY) + "px";
+    
+    document.body.appendChild(heart);
+    
+    // Remove from DOM after animation finishes
+    setTimeout(() => {
+        heart.remove();
+    }, 1500);
+}
+
+// --- SWIPE LOGIC ---
+let touchStartX = 0;
+let touchEndX = 0;
+let isAccepted = false;
+
+mainCard.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+}, false);
+
+mainCard.addEventListener('touchmove', e => {
+    if(isAccepted) return;
+    let currentX = e.changedTouches[0].screenX;
+    let diff = currentX - touchStartX;
+    if (diff > 0) {
+        mainCard.style.transform = `translateX(${diff}px) rotate(${diff/20}deg)`;
+    }
+}, false);
+
+mainCard.addEventListener('touchend', e => {
+    if(isAccepted) return;
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+}, false);
+
+function handleSwipe() {
+    if (touchEndX - touchStartX > 100) {
+        acceptLove();
+    } else {
+        mainCard.style.transform = `translateX(0px) rotate(0deg)`;
+    }
+}
 
 // 1. Ambient Background
 function createAmbientLayer() {
@@ -191,7 +275,10 @@ function fireConfetti() {
 }
 
 // 3. No Button Logic
-noBtn.addEventListener("click", () => {
+noBtn.addEventListener("click", (e) => {
+    // Trigger the heartbreak emoji
+    spawnHeartbreak(e);
+
     noClicks++;
     mainCard.classList.remove("apply-shake");
     void mainCard.offsetWidth; 
@@ -206,10 +293,9 @@ noBtn.addEventListener("click", () => {
     kittyImage.src = "https://media.tenor.com/g1SIlwFzDngAAAAi/crying-hello-kitty-sad-hello-kitty.gif";
 
     if (noClicks >= noMessages.length - 1) {
-        noBtn.innerText = "YES 💕";
+        noBtn.innerText = "YESSS 💕";
         noBtn.style.backgroundColor = "var(--soft-pink)";
         noBtn.style.color = "white";
-        // Important: Add the click event to play music even if they click the "fake" No button
         noBtn.onclick = acceptLove;
     }
 });
@@ -217,9 +303,11 @@ noBtn.addEventListener("click", () => {
 yesBtn.addEventListener("click", acceptLove);
 
 function acceptLove() {
+    isAccepted = true;
+    mainCard.style.transform = `translateX(0px) rotate(0deg)`;
     document.getElementById("buttonGroup").style.display = "none";
     document.getElementById("subText").style.display = "none";
-    document.getElementById("headerText").innerText = "Success! ✨💖";
+    document.getElementById("headerText").innerText = "hehehe youree my valentineee!😻😻✨💖";
     
     finalMessage.style.display = "block";
     kittyImage.src = "https://media.tenor.com/IaDZmbM5DnUAAAAi/hello-kitty.gif";
@@ -229,12 +317,9 @@ function acceptLove() {
 }
 
 function playMusic() {
-    // This starts the MP3. Browsers allow audio to play if it's 
-    // triggered by a user click (like clicking the "Yes" button).
-    audio.currentTime = 48; // Starts at 48 seconds like your original code
+    audio.currentTime = 48; 
     audio.play();
 }
-
 </script>
 
 </body>
