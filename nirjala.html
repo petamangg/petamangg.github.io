@@ -6,6 +6,7 @@
 <title>Will You Be My Valentine? 💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
     :root {
@@ -19,17 +20,13 @@
         margin: 0;
         font-family: 'Quicksand', sans-serif;
         background: linear-gradient(to bottom, #ff85b3, #ffb6d9, #ffe4f0);
-        background-size: 100% 100%;
         text-align: center;
         overflow: hidden;
     }
 
     #bg-animations {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0; width: 100%; height: 100%;
         pointer-events: none;
         z-index: 1;
     }
@@ -63,25 +60,13 @@
         75% { transform: translateX(10px) rotate(1deg); }
     }
 
-    .apply-shake {
-        animation: shake 0.2s ease-in-out 2;
-    }
+    .apply-shake { animation: shake 0.2s ease-in-out 2; }
 
-    h1 {
-        color: var(--primary-pink);
-        font-size: 2.5rem;
-        margin-bottom: 10px;
-    }
-
-    p {
-        color: var(--soft-pink);
-        font-size: 1.1rem;
-        font-weight: 700;
-    }
+    h1 { color: var(--primary-pink); font-size: 2.5rem; margin-bottom: 10px; }
+    p { color: var(--soft-pink); font-size: 1.1rem; font-weight: 700; }
 
     .kitty {
-        width: 180px;
-        height: 180px;
+        width: 180px; height: 180px;
         object-fit: contain;
         margin: 20px 0;
     }
@@ -103,46 +88,17 @@
         border-radius: 50px;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        display: block;
     }
 
-    #yesBtn {
-        background-color: var(--soft-pink);
-        color: white;
-        font-size: 1.5rem;
-        z-index: 5;
-    }
-
-    #noBtn {
-        background-color: white;
-        color: var(--soft-pink);
-        font-size: 1.1rem;
-        border: 2px solid var(--border-pink);
-    }
+    #yesBtn { background-color: var(--soft-pink); color: white; font-size: 1.5rem; z-index: 5; }
+    #noBtn { background-color: white; color: var(--soft-pink); font-size: 1.1rem; border: 2px solid var(--border-pink); }
 
     .floating-item {
-        position: fixed;
-        top: -10%;
-        pointer-events: none;
+        position: fixed; top: -10%; pointer-events: none;
         animation: fall linear forwards;
     }
 
-    .broken-heart {
-        position: absolute;
-        pointer-events: none;
-        font-size: 2.5rem;
-        animation: breakAndFly 0.8s ease-out forwards;
-        z-index: 100;
-    }
-
-    @keyframes fall {
-        to { transform: translateY(110vh) rotate(360deg); }
-    }
-
-    @keyframes breakAndFly {
-        0% { transform: scale(1) translateY(0); opacity: 1; }
-        100% { transform: scale(2) translateY(-120px); opacity: 0; }
-    }
+    @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
     .final-message {
         display: none;
@@ -150,16 +106,15 @@
         color: var(--primary-pink);
         line-height: 1.5;
     }
-
-    @media (max-width: 600px) {
-        h1 { font-size: 1.8rem; }
-        .card { padding: 25px; }
-        .kitty { width: 140px; height: 140px; }
-    }
 </style>
 </head>
 
 <body>
+
+<audio id="mySong">
+    <source src="Vanessa Carlton - A Thousand Miles - VanessaCarltonVEVO.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
 
 <div id="bg-animations"></div>
 
@@ -193,10 +148,9 @@ const kittyImage = document.getElementById("kittyImage");
 const finalMessage = document.getElementById("finalMessage");
 const mainCard = document.getElementById("mainCard");
 const bgContainer = document.getElementById("bg-animations");
+const audio = document.getElementById("mySong");
 
 let noClicks = 0;
-
-// The text messages you wanted
 const noMessages = [
     "NO 💔",
     "whyyy? 🥺",
@@ -207,6 +161,7 @@ const noMessages = [
     "say YES! 💕"
 ];
 
+// 1. Ambient Background
 function createAmbientLayer() {
     const items = ["🌸", "🌹", "💖", "✨"];
     setInterval(() => {
@@ -216,47 +171,45 @@ function createAmbientLayer() {
         item.style.left = Math.random() * 100 + "vw";
         item.style.fontSize = (Math.random() * 20 + 15) + "px";
         item.style.animationDuration = (Math.random() * 5 + 5) + "s";
-        item.style.opacity = Math.random();
         bgContainer.appendChild(item);
         setTimeout(() => item.remove(), 10000);
     }, 400);
 }
 createAmbientLayer();
 
-noBtn.addEventListener("click", (e) => {
-    noClicks++;
+// 2. Confetti
+function fireConfetti() {
+    const count = 200;
+    const defaults = { origin: { y: 0.7 }, zIndex: 1000 };
+    function fire(particleRatio, opts) {
+        confetti({ ...defaults, ...opts, particleCount: Math.floor(count * particleRatio)});
+    }
+    fire(0.25, { spread: 26, startVelocity: 55 });
+    fire(0.2, { spread: 60 });
+    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+}
 
-    // Shake effect
+// 3. No Button Logic
+noBtn.addEventListener("click", () => {
+    noClicks++;
     mainCard.classList.remove("apply-shake");
     void mainCard.offsetWidth; 
     mainCard.classList.add("apply-shake");
 
-    // Particles
-    const hb = document.createElement("div");
-    hb.classList.add("broken-heart");
-    hb.innerText = "💔";
-    hb.style.left = `${e.clientX - 20}px`;
-    hb.style.top = `${e.clientY - 20}px`;
-    document.body.appendChild(hb);
-    setTimeout(() => hb.remove(), 800);
-
-    // Update Button Text
     if (noClicks < noMessages.length) {
         noBtn.innerText = noMessages[noClicks];
     }
 
-    // Scaling logic
-    yesBtn.style.transform = `scale(${1 + noClicks * 0.4})`;
+    yesBtn.style.transform = `scale(${1 + noClicks * 0.45})`;
     noBtn.style.transform = `scale(${Math.max(0.6, 1 - noClicks * 0.1)})`;
-    
-    // Change image to sad kitty
     kittyImage.src = "https://media.tenor.com/g1SIlwFzDngAAAAi/crying-hello-kitty-sad-hello-kitty.gif";
 
-    // When we reach the end of the text array, turn No into Yes
     if (noClicks >= noMessages.length - 1) {
         noBtn.innerText = "YES 💕";
-        noBtn.style.backgroundColor = "#ff4da6";
+        noBtn.style.backgroundColor = "var(--soft-pink)";
         noBtn.style.color = "white";
+        // Important: Add the click event to play music even if they click the "fake" No button
         noBtn.onclick = acceptLove;
     }
 });
@@ -271,19 +224,17 @@ function acceptLove() {
     finalMessage.style.display = "block";
     kittyImage.src = "https://media.tenor.com/IaDZmbM5DnUAAAAi/hello-kitty.gif";
     
-    // Success heart explosion
-    setInterval(() => {
-        const heart = document.createElement("div");
-        heart.classList.add("floating-item");
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (Math.random() * 25 + 25) + "px";
-        heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
-        heart.style.zIndex = "20"; 
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-    }, 150);
+    fireConfetti();
+    playMusic();
 }
+
+function playMusic() {
+    // This starts the MP3. Browsers allow audio to play if it's 
+    // triggered by a user click (like clicking the "Yes" button).
+    audio.currentTime = 48; // Starts at 48 seconds like your original code
+    audio.play();
+}
+
 </script>
 
 </body>
