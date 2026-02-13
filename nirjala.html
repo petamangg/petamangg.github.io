@@ -12,13 +12,12 @@
         --primary-pink: #ff2e86;
         --soft-pink: #ff4da6;
         --light-pink: #ffd6e8;
-        --border-pink: #ffb6d9; /* New pinker border color */
+        --border-pink: #ffb6d9;
     }
 
     body {
         margin: 0;
         font-family: 'Quicksand', sans-serif;
-        /* Updated: Top-down gradient (darker pink to lighter pink) */
         background: linear-gradient(to bottom, #ff85b3, #ffb6d9, #ffe4f0);
         background-size: 100% 100%;
         text-align: center;
@@ -51,7 +50,6 @@
         backdrop-filter: blur(12px);
         padding: 40px;
         border-radius: 40px;
-        /* Updated: Pinker, softer border */
         border: 4px var(--border-pink) solid;
         box-shadow: 0 15px 35px rgba(255, 77, 166, 0.3);
         max-width: 500px;
@@ -88,14 +86,13 @@
         margin: 20px 0;
     }
 
-    /* Fix: Overlapping - Changed to Column so they stack as they grow */
     .buttons {
         margin-top: 20px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 20px; /* Space between buttons */
+        gap: 20px;
     }
 
     button {
@@ -199,6 +196,17 @@ const bgContainer = document.getElementById("bg-animations");
 
 let noClicks = 0;
 
+// The text messages you wanted
+const noMessages = [
+    "NO 💔",
+    "whyyy? 🥺",
+    "noo please noo 😭",
+    "please be my valentine! 🌸",
+    "pretty please?? 🧸",
+    "don't do this to me... ❤️‍🩹",
+    "say YES! 💕"
+];
+
 function createAmbientLayer() {
     const items = ["🌸", "🌹", "💖", "✨"];
     setInterval(() => {
@@ -218,10 +226,12 @@ createAmbientLayer();
 noBtn.addEventListener("click", (e) => {
     noClicks++;
 
+    // Shake effect
     mainCard.classList.remove("apply-shake");
     void mainCard.offsetWidth; 
     mainCard.classList.add("apply-shake");
 
+    // Particles
     const hb = document.createElement("div");
     hb.classList.add("broken-heart");
     hb.innerText = "💔";
@@ -230,13 +240,20 @@ noBtn.addEventListener("click", (e) => {
     document.body.appendChild(hb);
     setTimeout(() => hb.remove(), 800);
 
+    // Update Button Text
+    if (noClicks < noMessages.length) {
+        noBtn.innerText = noMessages[noClicks];
+    }
+
     // Scaling logic
-    yesBtn.style.transform = `scale(${1 + noClicks * 0.35})`;
-    noBtn.style.transform = `scale(${Math.max(0.5, 1 - noClicks * 0.12)})`;
+    yesBtn.style.transform = `scale(${1 + noClicks * 0.4})`;
+    noBtn.style.transform = `scale(${Math.max(0.6, 1 - noClicks * 0.1)})`;
     
+    // Change image to sad kitty
     kittyImage.src = "https://media.tenor.com/g1SIlwFzDngAAAAi/crying-hello-kitty-sad-hello-kitty.gif";
 
-    if (noClicks >= 4) {
+    // When we reach the end of the text array, turn No into Yes
+    if (noClicks >= noMessages.length - 1) {
         noBtn.innerText = "YES 💕";
         noBtn.style.backgroundColor = "#ff4da6";
         noBtn.style.color = "white";
@@ -254,6 +271,7 @@ function acceptLove() {
     finalMessage.style.display = "block";
     kittyImage.src = "https://media.tenor.com/IaDZmbM5DnUAAAAi/hello-kitty.gif";
     
+    // Success heart explosion
     setInterval(() => {
         const heart = document.createElement("div");
         heart.classList.add("floating-item");
