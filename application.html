@@ -1,1 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Queen Bee Employment Application</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:'Quicksand',sans-serif;
+    background:linear-gradient(135deg,#ffd6e7,#fff0f6);
+    min-height:100vh;
+    padding:30px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    border-radius:25px;
+    padding:35px;
+    box-shadow:0 10px 30px rgba(255,105,180,.2);
+    border:4px solid #ffb6d5;
+}
+
+.header{
+    text-align:center;
+}
+
+.header h1{
+    color:#ff4f9a;
+    margin-bottom:5px;
+}
+
+.header p{
+    color:#666;
+}
+
+.kitty{
+    font-size:60px;
+    margin-bottom:10px;
+}
+
+label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:6px;
+    font-weight:700;
+    color:#ff4f9a;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px;
+    border:2px solid #ffc7de;
+    border-radius:12px;
+    font-family:inherit;
+    font-size:15px;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    outline:none;
+    border-color:#ff69b4;
+}
+
+textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.checkbox{
+    margin-top:20px;
+}
+
+button{
+    width:100%;
+    margin-top:25px;
+    border:none;
+    padding:15px;
+    border-radius:15px;
+    background:#ff69b4;
+    color:white;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ff4f9a;
+}
+
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:#999;
+    font-size:14px;
+}
+
+.decor{
+    text-align:center;
+    font-size:22px;
+    margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="kitty">🎀🐱🎀</div>
+        <h1>Queen Bee Employment Application</h1>
+        <p>Apply to become an official Worker Bee of the Hive</p>
+    </div>
+
+    <div class="decor">
+        💗 🌸 🎀 🌸 💗
+    </div>
+
+    <form>
+
+        <label>Full Name</label>
+        <input type="text" required>
+
+        <label>Address</label>
+        <input type="text">
+
+        <label>Age</label>
+        <input type="number">
+
+        <label>What can you provide to the hive?</label>
+        <textarea></textarea>
+
+        <label>What are your specialties or skills?</label>
+        <textarea></textarea>
+
+        <label>Describe your work ethic.</label>
+        <textarea></textarea>
+
+        <label>Have you worked in any previous hives? If yes, explain.</label>
+        <textarea></textarea>
+
+        <label>Do you have soft hands?</label>
+        <select>
+            <option>Yes</option>
+            <option>No</option>
+            <option>Unsure</option>
+        </select>
+
+        <label>Do you know how to tickle people?</label>
+        <select>
+            <option>Expert</option>
+            <option>Intermediate</option>
+            <option>Beginner</option>
+            <option>Not at all</option>
+        </select>
+
+        <label>Why should the Queen Bee hire you?</label>
+        <textarea></textarea>
+
+        <div class="checkbox">
+            <input type="checkbox" required>
+            I confirm that all information provided is true.
+        </div>
+
+        <button type="submit">🎀 Submit Application 🎀</button>
+
+    </form>
+
+    <div class="footer">
+        Made for the Queen Bee 💗
+    </div>
+
+</div>
+
+</body>
+</html>
