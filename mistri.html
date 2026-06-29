@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mistri Club Application</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:Quicksand,sans-serif;
+
+background:
+radial-gradient(circle at top left,#ffd6ea 0%,transparent 35%),
+radial-gradient(circle at bottom right,#ffe8f3 0%,transparent 40%),
+linear-gradient(135deg,#fff5fa,#ffeaf4,#ffdbe9);
+
+min-height:100vh;
+
+display:flex;
+justify-content:center;
+padding:50px 20px;
+
+color:#5b4151;
+
+}
+
+.container{
+
+width:100%;
+max-width:850px;
+
+background:rgba(255,255,255,.65);
+
+backdrop-filter:blur(15px);
+
+border-radius:30px;
+
+padding:45px;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.08);
+
+border:1px solid rgba(255,255,255,.6);
+
+}
+
+h1{
+
+font-family:"Playfair Display",serif;
+font-size:48px;
+text-align:center;
+margin-bottom:10px;
+color:#b14c79;
+
+}
+
+.subtitle{
+
+text-align:center;
+font-size:18px;
+margin-bottom:40px;
+opacity:.8;
+
+}
+
+.question{
+
+margin-bottom:30px;
+
+}
+
+label{
+
+display:block;
+font-weight:700;
+margin-bottom:10px;
+font-size:18px;
+
+}
+
+small{
+
+display:block;
+margin-top:6px;
+opacity:.65;
+
+}
+
+input,
+textarea{
+
+width:100%;
+padding:16px;
+
+border:none;
+
+border-radius:18px;
+
+background:#fff;
+
+font-size:16px;
+
+font-family:inherit;
+
+outline:none;
+
+transition:.25s;
+
+box-shadow:0 5px 15px rgba(0,0,0,.05);
+
+}
+
+input:focus,
+textarea:focus{
+
+transform:scale(1.01);
+
+box-shadow:0 10px 25px rgba(255,120,170,.25);
+
+}
+
+textarea{
+
+min-height:130px;
+resize:vertical;
+
+}
+
+button{
+
+width:100%;
+
+padding:18px;
+
+border:none;
+
+border-radius:20px;
+
+background:linear-gradient(135deg,#ff77ad,#ff98c1);
+
+font-size:18px;
+
+font-weight:bold;
+
+color:white;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+button:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 15px 30px rgba(255,105,160,.35);
+
+}
+
+.footer{
+
+margin-top:35px;
+
+text-align:center;
+
+opacity:.7;
+
+font-size:14px;
+
+}
+
+.divider{
+
+height:2px;
+
+background:linear-gradient(to right,transparent,#ffc4dc,transparent);
+
+margin:35px 0;
+
+}
+@media (max-width:700px){
+
+body{
+padding:20px 12px;
+}
+
+.container{
+padding:25px;
+border-radius:22px;
+}
+
+h1{
+font-size:34px;
+}
+
+.subtitle{
+font-size:16px;
+margin-bottom:28px;
+}
+
+label{
+font-size:16px;
+}
+
+input,
+textarea,
+button{
+font-size:16px;
+padding:14px;
+}
+
+textarea{
+min-height:110px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Mistri Club</h1>
+
+<p class="subtitle">
+Applications are now open for the finest builders, fixers, thinkers and future legends.
+</p>
+
+<form action="https://formspree.io/f/mojolpwr" method="POST">
+
+<div class="question">
+<label>1. What's your name?</label>
+<input type="text" name="Name" required>
+</div>
+
+<div class="question">
+<label>2. Any prior experience? If yes, how much and where?</label>
+<textarea name="Experience" required></textarea>
+</div>
+
+<div class="question">
+<label>3. Explain your duties as a proud Mistri.</label>
+<textarea name="Duties" required></textarea>
+</div>
+
+<div class="question">
+<label>4. Why do you choose this path of becoming a Mistri?</label>
+<textarea name="Reason" required></textarea>
+</div>
+
+<div class="divider"></div>
+
+<div class="question">
+<label>5. Che-mistry?</label>
+<textarea name="Chemistry Joke" placeholder="Get it?... Che-mistry..."></textarea>
+<small>We had to make this joke at least once.</small>
+</div>
+
+<div class="question">
+<label>6. If someone hands you a hammer, what's the first thing you're fixing?</label>
+<textarea name="Hammer"></textarea>
+</div>
+
+<div class="question">
+<label>7. Rate your confidence with a measuring tape.</label>
+<input type="text" name="Measuring Tape" placeholder="For example: 11/10, 7/10, I measure with vibes">
+</div>
+
+<div class="question">
+<label>8. Which tool best represents your personality?</label>
+<input type="text" name="Tool Personality">
+</div>
+
+<div class="question">
+<label>9. Finish this sentence:</label>
+<textarea name="Sentence">
+"A true Mistri never..."
+</textarea>
+</div>
+
+<div class="question">
+<label>On a scale from 1–10, where do you land in the Mistri sector?</label>
+
+<input
+type="range"
+min="1"
+max="10"
+value="5"
+name="Mistri Level"
+id="level"
+oninput="levelValue.innerText=this.value">
+
+<p style="margin-top:10px;font-weight:bold;">
+<span id="levelValue">5</span>/10
+</p>
+
+<small>
+1 = I hold the flashlight.<br>
+10 = I build the house and still have screws left over.
+</small>
+
+</div>
+<div class="question">
+<label>10. If we secretly replaced your toolbox with snacks, how long would it take you to notice?</label>
+<textarea name="Toolbox"></textarea>
+</div>
+
+<div class="question">
+<label>11. Anything else you'd like the Mistri Council to know?</label>
+<textarea name="Anything Else"></textarea>
+</div>
+<div class="question">
+
+<label>Where did you learn the sacred art of being a Mistri?</label>
+
+<label><input type="radio" name="Learning Source" value="Instagram"> Instagram</label>
+
+<label><input type="radio" name="Learning Source" value="TikTok"> TikTok</label>
+
+<label><input type="radio" name="Learning Source" value="YouTube"> YouTube</label>
+
+<label><input type="radio" name="Learning Source" value="From family"> From family</label>
+
+<label><input type="radio" name="Learning Source" value="Work experience"> Work experience</label>
+
+<label><input type="radio" name="Learning Source" value="Self taught"> Self taught</label>
+
+<label><input type="radio" name="Learning Source" value="Other"> Other</label>
+
+<input
+type="text"
+name="Learning Source Other"
+placeholder="If other, tell us...">
+
+</div>
+
+<button type="submit">
+Submit Application
+</button>
+
+</form>
+
+<div class="footer">
+Built with questionable humor and solid craftsmanship.
+</div>
+
+</div>
+
+</body>
+</html>
